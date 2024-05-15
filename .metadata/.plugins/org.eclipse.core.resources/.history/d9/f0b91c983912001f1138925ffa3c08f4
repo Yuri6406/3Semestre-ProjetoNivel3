@@ -1,0 +1,179 @@
+package cadastrobd.model;
+
+import java.util.Scanner;
+
+public class CadastroBDTeste {
+
+	public static void main(String[] args) {
+		Scanner leia = new Scanner(System.in);
+
+		PessoaFisicaDAO pessoaFisicaDao = new PessoaFisicaDAO();
+		PessoaFisica pessoaFisica = new PessoaFisica(0, null, null, null, null, null, null);
+
+		PessoaJuridicaDAO pessoaJuridicaDao = new PessoaJuridicaDAO();
+		PessoaJuridica pessoaJuridica = new PessoaJuridica(0, null, null, null, null, null, null, null);
+
+		while (true) {
+
+			System.out.println("Cadastro De Pessoas");
+			System.out.println();
+			System.out.println("[1] Incluir\n" + "[2] Alterar\n" + "[3] Excluir\n" + "[4] Exibir através do Id\n"
+					+ "[5] Exibir Todos Cadastrados\n" + "[6] Salvar dados de Pessoa\n[7]"
+					+ " Recuperar dados de Pessoa\n" + "[0] Finalizar a execução ");
+			System.out.println();
+			System.out.println("Escolha uma das opções á cima: ");
+
+			Integer opc = leia.nextInt();
+
+			leia.nextLine();
+			if (opc >= 1 && opc <= 7) {
+
+				System.out.println("Digite apenas a letra F ou J :\n[F]Fisica\n[J]Juridica? ");
+				String cadast = leia.nextLine().toUpperCase();
+				String cadastoL = cadast.substring(0, 1);
+
+				switch (opc) {
+				case 1:
+					if (cadastoL.equals("F")) {
+						System.out.println("Nome: ");
+						String nome = leia.nextLine();
+						pessoaFisica.setNome(nome);
+						System.out.println("Logradouro: ");
+						String logradouro = leia.nextLine();
+						pessoaFisica.setLogradouro(logradouro);
+						System.out.println("Cidade: ");
+						String cidade = leia.nextLine();
+						pessoaFisica.setCidade(cidade);
+						System.out.println("Estado: ");
+						String estado = leia.nextLine();
+						pessoaFisica.setEstado(estado);
+						System.out.println("Telefone: ");
+						String telefone = leia.nextLine();
+						pessoaFisica.setTelefone(telefone);
+						System.out.println("Email: ");
+						String email = leia.nextLine();
+						pessoaFisica.setEmail("Isa@hot.vom");
+						System.out.println("CPF: ");
+						String cpf = leia.nextLine();
+						pessoaFisica.setCpf(cpf);
+
+						pessoaFisicaDao.incluir(pessoaFisica);
+
+						System.out.println("Cadastrando Pessoa Fisica");
+					} else if (cadastoL.equals("J")) {
+						System.out.println("Nome: ");
+						String nome = leia.nextLine();
+						pessoaJuridica.setNome(nome);
+						System.out.println("Logradouro: ");
+						String logradouro = leia.nextLine();
+						pessoaJuridica.setLogradouro(logradouro);
+						System.out.println("Cidade: ");
+						String cidade = leia.nextLine();
+						pessoaJuridica.setCidade(cidade);
+						System.out.println("Estado: ");
+						String estado = leia.nextLine();
+						pessoaJuridica.setEstado(estado);
+						System.out.println("Telefone: ");
+						String telefone = leia.nextLine();
+						pessoaJuridica.setTelefone(telefone);
+						System.out.println("Email: ");
+						String email = leia.nextLine();
+						pessoaJuridica.setEmail("Isa@hot.vom");
+						System.out.println("CNPJ: ");
+						String cnpj = leia.nextLine();
+						pessoaJuridica.setCnpj(cnpj);
+
+						pessoaJuridicaDao.incluir(pessoaJuridica);
+						System.out.println("Cadastrando Pessoa Juridica");
+					}
+					break;
+				case 2:
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Alterando Pessoa Fisica");
+					} else if (cadastoL.equals("J")) {
+
+						System.out.println("Alterando Pessoa Juridica");
+					}
+					break;
+				case 3:
+
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Excluindo Pessoa Fisica");
+					} else if (cadastoL.equals("JURIDICA")) {
+
+						System.out.println("Excluindo Pessoa Juridica");
+					}
+					break;
+				case 4:
+
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Exibindo Pessoa Fisica através do Id ");
+					} else if (cadastoL.equals("J")) {
+
+						System.out.println("Exibindo Pessoa Juridica através do Id ");
+					}
+					break;
+				case 5:
+
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Exibindo todas Pessoas Fisica");
+					} else if (cadastoL.equals("J")) {
+
+						System.out.println("Exibindo todas Pessoas Juridica");
+					}
+					break;
+
+				case 6:
+
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Salvano dados de Pessoa Fisica");
+					} else if (cadastoL.equals("J")) {
+
+						System.out.println("Salvano dados de Pessoa Juridica");
+					}
+					break;
+
+				case 7:
+
+					if (cadastoL.equals("F")) {
+
+						System.out.println("Recuperando dados de Pessoa Fisica");
+					} else if (cadastoL.equals("J")) {
+
+						System.out.println("Recuperando dados de Pessoa Juridica");
+					}
+					break;
+				}
+			} else if (opc == 0) {
+				System.out.println("Execução finalizada");
+				return;
+
+			} else {
+				System.out.println("Opção Invalida");
+			}
+
+			while (true) {
+				System.out.println("Deseja Cadastrar mais Pessoas? [S/N]");
+				String resp = leia.nextLine().toUpperCase();
+				String respoL = resp.substring(0, 1);
+
+				if (respoL.equals("N")) {
+					System.out.println("Programa encerrado");
+					return;
+				} else if (!respoL.equals("S")) {
+					System.out.println("Opção invalida. Digite S para continuar ou N para não continuar.");
+				} else {
+					break;
+				}
+			}
+
+		}
+
+	}
+
+}

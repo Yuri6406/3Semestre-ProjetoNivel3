@@ -1,0 +1,23 @@
+package cadastrobd.model;
+
+public class CadastroBDTeste {
+
+	public static void main(String[] args) {
+
+		PessoaFisicaDAO pessoaFisicaDao = new PessoaFisicaDAO();
+
+		PessoaFisica pessoaFisica = new PessoaFisica(0, null, null, null, null, null, null);
+
+		pessoaFisica.setId(1);
+		pessoaFisica.setNome("Maria");
+		pessoaFisica.setLogradouro("Maria");
+		pessoaFisica.setCidade("Maria");
+		pessoaFisica.setEstado("Maria");
+		pessoaFisica.setTelefone("31232343");
+		pessoaFisica.setEmail("dfedsd@hot.vom");
+		pessoaFisica.setCpf("32423435645");
+
+		pessoaFisicaDao.incluir(pessoaFisica);
+	}
+
+}

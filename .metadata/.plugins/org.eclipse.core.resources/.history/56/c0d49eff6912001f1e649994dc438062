@@ -1,0 +1,47 @@
+package cadastrobd.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import cadastro.model.util.ConectorBD;
+
+public class PessoaJuridicaDAO {
+
+	public void incluir(PessoaJuridica pessoaJuridica) {
+		String sql = "INSERT INTO pessoajuridica (idJuridica, nome, logradouro, cidade, estado, telefone, email,cnpj) VALUES (?,?,?,?,?,?,?,?)";
+
+		Connection conn = null;
+		PreparedStatement preparedStatemet = null;
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+
+			preparedStatemet.setInt(1, pessoaJuridica.getId());
+			preparedStatemet.setString(2, pessoaJuridica.getNome());
+			preparedStatemet.setString(3, pessoaJuridica.getLogradouro());
+			preparedStatemet.setString(4, pessoaJuridica.getCidade());
+			preparedStatemet.setString(5, pessoaJuridica.getEstado());
+			preparedStatemet.setString(6, pessoaJuridica.getTelefone());
+			preparedStatemet.setString(7, pessoaJuridica.getEmail());
+			preparedStatemet.setString(8, pessoaJuridica.getCnpj());
+
+			// Executar a query
+			preparedStatemet.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// Fechar as conexões
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

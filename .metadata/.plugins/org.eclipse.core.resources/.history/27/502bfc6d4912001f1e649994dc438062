@@ -1,0 +1,89 @@
+package cadastrobd.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import cadastro.model.util.ConectorBD;
+
+public class PessoaFisicaDAO {
+
+	static Connection conn = null;
+	static PreparedStatement preparedStatemet = null;
+
+	public void incluir(PessoaFisica pessoaFisica) {
+		String sql = "INSERT INTO pessoafisica (idPessoa, nome, logradouro, cidade, estado, telefone, email,cpf) VALUES (?,?,?,?,?,?,?,?)";
+
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+
+			preparedStatemet.setInt(1, pessoaFisica.getId());
+			preparedStatemet.setString(2, pessoaFisica.getNome());
+			preparedStatemet.setString(3, pessoaFisica.getLogradouro());
+			preparedStatemet.setString(4, pessoaFisica.getCidade());
+			preparedStatemet.setString(5, pessoaFisica.getEstado());
+			preparedStatemet.setString(6, pessoaFisica.getTelefone());
+			preparedStatemet.setString(7, pessoaFisica.getEmail());
+			preparedStatemet.setString(8, pessoaFisica.getCpf());
+
+			// Executar a query
+			preparedStatemet.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// Fechar as conexões
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void alterar(PessoaFisica pessoaFisica) throws ClassNotFoundException {
+		String sql = "UPDATE pessoafisica SET nome=?, logradouro=?, cidade=?, estado=?, telefone=?, email=?, cpf=? WHERE id=?";
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+
+			preparedStatemet.setString(1, pessoaFisica.getNome());
+			preparedStatemet.setString(2, pessoaFisica.getEmail());
+			preparedStatemet.setInt(3, pessoaFisica.getId());
+			preparedStatemet.executeUpdate();
+			preparedStatemet.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void excluir(int id) throws ClassNotFoundException {
+		String sql = "DELETE FROM pessoaFisica WHERE id=?";
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+			preparedStatemet.setInt(1, id);
+			preparedStatemet.executeUpdate();
+			preparedStatemet.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+}

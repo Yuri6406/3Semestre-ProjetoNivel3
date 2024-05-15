@@ -1,0 +1,122 @@
+package cadastrobd.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import cadastro.model.util.ConectorBD;
+
+public class PessoaJuridicaDAO {
+
+	Scanner leia = new Scanner(System.in);
+	PessoaJuridica pessoaJuridica = new PessoaJuridica(0, null, null, null, null, null, null, null);
+
+	Connection conn = null;
+	PreparedStatement preparedStatemet = null;
+	
+	public void incluir(PessoaJuridica pessoaJuridica) {
+		String sql = "INSERT INTO pessoajuridica (idJuridica, nome, logradouro, cidade, estado, telefone, email,cnpj) VALUES (?,?,?,?,?,?,?,?)";
+
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+
+			preparedStatemet.setInt(1, pessoaJuridica.getId());
+			preparedStatemet.setString(2, pessoaJuridica.getNome());
+			preparedStatemet.setString(3, pessoaJuridica.getLogradouro());
+			preparedStatemet.setString(4, pessoaJuridica.getCidade());
+			preparedStatemet.setString(5, pessoaJuridica.getEstado());
+			preparedStatemet.setString(6, pessoaJuridica.getTelefone());
+			preparedStatemet.setString(7, pessoaJuridica.getEmail());
+			preparedStatemet.setString(8, pessoaJuridica.getCnpj());
+
+			// Executar a query
+			preparedStatemet.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// Fechar as conexões
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	public PessoaJuridica getPessoa(int id) throws ClassNotFoundException, SQLException {
+
+		// Criar uma conexão com o banco de dados
+		conn = ConectorBD.createConnectionToMySQL();
+
+		PessoaJuridica pessoa = new PessoaJuridica(id, null, null, null, null, null, null, null);
+		try {
+			PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM pessoaJuridica WHERE idJuridica=?");
+			preparedStatement.setInt(1, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				pessoa.setId(resultSet.getInt("idJuridica"));
+				pessoa.setNome(resultSet.getString("nome"));
+				pessoa.setLogradouro(resultSet.getString("logradouro"));
+				pessoa.setCidade(resultSet.getString("cidade"));
+				pessoa.setEstado(resultSet.getString("estado"));
+				pessoa.setTelefone(resultSet.getString("telefone"));
+				pessoa.setEmail(resultSet.getString("email"));
+				pessoa.setCnpj(resultSet.getString("cnpj"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pessoa;
+	}
+
+	public void inserirPessoa() {
+		System.out.println("Nome: ");
+		String nome = leia.nextLine();
+		pessoaJuridica.setNome(nome);
+		System.out.println("Logradouro: ");
+		String logradouro = leia.nextLine();
+		pessoaJuridica.setLogradouro(logradouro);
+		System.out.println("Cidade: ");
+		String cidade = leia.nextLine();
+		pessoaJuridica.setCidade(cidade);
+		System.out.println("Estado: ");
+		String estado = leia.nextLine();
+		pessoaJuridica.setEstado(estado);
+		System.out.println("Telefone: ");
+		String telefone = leia.nextLine();
+		pessoaJuridica.setTelefone(telefone);
+		System.out.println("Email: ");
+		String email = leia.nextLine();
+		pessoaJuridica.setEmail(email);
+		System.out.println("CNPJ: ");
+		String cnpj = leia.nextLine();
+		pessoaJuridica.setCnpj(cnpj);
+
+		incluir(pessoaJuridica);
+		System.out.println("Cadastrando Pessoa Juridica");
+	}
+	
+	// Mostra apenas um usuário
+	public void exibirPessoa() throws ClassNotFoundException, SQLException {
+		System.out.println("Digite o ID da pessoa que deseja exibir: ");
+		int id = leia.nextInt();
+		PessoaJuridica pessoa = getPessoa(id);
+		System.out.println("ID: " + pessoa.getId() + "\nNome: " + pessoa.getNome() + "\nLogradouro: "
+				+ pessoa.getLogradouro() + "\nCidade: " + pessoa.getCidade() + "\nTelefone: " + pessoa.getTelefone()
+				+ "\nEstado: " + pessoa.getEstado() + "\nEmail: " + pessoa.getEmail() +"\nCnpj: " + pessoa.getCnpj());
+
+		System.out.println("Exibindo Pessoa Fisica através do Id ");
+		
+	}
+}

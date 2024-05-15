@@ -1,0 +1,67 @@
+package cadastrobd.model;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import cadastro.model.util.ConectorBD;
+
+public class PessoaFisicaDAO {
+
+	public void incluir(PessoaFisica pessoaFisica) {
+		String sql = "INSERT INTO pessoa (idPessoa, nome, logradouro, cidade, estado, telefone, email) VALUES (?,?,?,?,?,?,?)";
+
+		Connection conn = null;
+		PreparedStatement preparedStatemet = null;
+		try {
+			// Criar uma conexão com o banco de dados
+			conn = ConectorBD.createConnectionToMySQL();
+
+			// Criar uma preparedStatemet, para execultar uma query
+			preparedStatemet = conn.prepareStatement(sql);
+
+			preparedStatemet.setInt(1, pessoaFisica.getId());
+			preparedStatemet.setString(2, pessoaFisica.getNome());
+			preparedStatemet.setString(3, pessoaFisica.getLogradouro());
+			preparedStatemet.setString(4, pessoaFisica.getCidade());
+			preparedStatemet.setString(5, pessoaFisica.getEstado());
+			preparedStatemet.setString(6, pessoaFisica.getTelefone());
+			preparedStatemet.setString(7, pessoaFisica.getEmail());
+
+			// Executar a query
+			preparedStatemet.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// Fechar as conexões
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/*
+	 * public static void alterar(PessoaFisica pessoaFisica) { try {
+	 * PreparedStatement preparedStatement =
+	 * conn.prepareStatement("UPDATE pessoaFisica SET name=?, email=? WHERE id=?");
+	 * preparedStatement.setString(1, pessoaFisica.getNome());
+	 * preparedStatement.setString(2, pessoaFisica.getEmail());
+	 * preparedStatement.setInt(3, pessoaFisica.getId());
+	 * preparedStatement.executeUpdate(); preparedStatement.close(); conn.close();
+	 * 
+	 * } catch (SQLException e) { e.printStackTrace(); } }
+	 * 
+	 * public static void excluir(PessoaFisica pessoaFisica) { try {
+	 * PreparedStatement preparedStatement =
+	 * conn.prepareStatement("DELETE FROM pessoaFisica WHERE id=?");
+	 * preparedStatement.setInt(1, pessoaFisica.getId());
+	 * preparedStatement.executeUpdate(); preparedStatement.close(); conn.close();
+	 * 
+	 * 
+	 * } catch (SQLException e) { e.printStackTrace(); } }
+	 */
+}
